@@ -1,0 +1,24 @@
+{
+    "name": "simple-banking-api",
+    "description": "",
+    "keywords": [],
+    "website": "https://github.com/lekkimworld",
+    "repository": "https://github.com/lekkimworld",
+    "success_url": "/welcome",
+    "scripts": {
+        "postdeploy": "bundle exec rake bootstrap"
+    },
+    "env": {},
+    "formation": {
+        "web": {
+            "quantity": 1,
+            "size": "hobby"
+        }
+    },
+    "image": "heroku/ruby",
+    "addons": [
+        "heroku-redis:hobby-dev",
+        "heroku-postgresql:hobby-basic"
+    ],
+    "environments": {}
+}
