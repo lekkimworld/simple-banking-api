@@ -1,14 +1,15 @@
 import express from "express";
+
+// read .env
 import { config as dotenv_config } from "dotenv";
+dotenv_config();
 import { json as bpjson } from "body-parser";
 import createRedisClient from "./redis";
 import configureRedisSession from "./redis-session";
 import configureStatic from "./static";
 import configureRoutes from "./configure-routes";
 import configureHandlebars from "./handlebars";
-
-// read .env
-dotenv_config();
+import configurePostgres, { terminatePool } from "./postgres";
 
 // create app
 const app = express();
@@ -25,9 +26,17 @@ configureStatic(app);
 const redisClient = createRedisClient();
 configureRedisSession(app, redisClient);
 
+// configure postgres
+configurePostgres(app);
+
 // create routes
 configureRoutes(app);
 
 // listen
-app.listen(process.env.PORT || 8080);
+const server = app.listen(process.env.PORT || 8080);
 console.log(`Started listening on port ${process.env.PORT || 8080}`); ''
+process.on('SIGTERM', () => {
+    server.close();
+    terminatePool();
+    process.exit(0);
+})
