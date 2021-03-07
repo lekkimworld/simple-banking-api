@@ -12,6 +12,7 @@ dotenv_config();
 
 // create app
 const app = express();
+app.disable('x-powered-by');
 app.use(bpjson());
 
 // configure handlebats
