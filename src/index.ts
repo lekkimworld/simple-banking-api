@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Response, Request, NextFunction } from "express";
 
 // read .env
 import { config as dotenv_config } from "dotenv";
@@ -31,6 +31,25 @@ configurePostgres(app);
 
 // create routes
 configureRoutes(app);
+
+// serialize output
+app.use(async (_req, res, next) => {
+    if (!res.locals.result) return next();
+    res.type("json").send(res.locals.result).end();
+})
+
+// error handler
+//@ts-ignore
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+    const o = {
+        "status": "ERROR",
+        "message": err.message
+    }
+    if (err.hasOwnProperty("httpCode")) {
+        res.status((err as any).httpCode);
+    }
+    res.type("json").send(o);
+})
 
 // listen
 const server = app.listen(process.env.PORT || 8080);
