@@ -36,12 +36,14 @@ export class Account {
 }
 
 export class Transaction {
+    id: string;
     before: number;
     delta: number;
     after: number;
     dt: Moment;
 
-    constructor(before: number, delta: number, after: number, dt: Moment) {
+    constructor(id: string, before: number, delta: number, after: number, dt: Moment) {
+        this.id = id;
         this.after = round(after, 2);
         this.before = round(before, 2);
         this.delta = round(delta, 2);

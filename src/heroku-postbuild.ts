@@ -73,7 +73,7 @@ queryHelper.query("select count(*) from customer").then(result => {
                 const delta_amount = (Math.round(Math.random() * (MAX_AMOUNT - MIN_AMOUNT) + MIN_AMOUNT) * 100) / 100;
                 const before_amount = amount;
                 amount += delta_amount;
-                await queryHelper.query("insert into tx (regno, accountno, before, delta, after, txdt) values ($1, $2, $3, $4, $5, $6)", regno, accountno, before_amount, delta_amount, amount, txdt);
+                await queryHelper.query("insert into tx (regno, accountno, before, delta, after, txdt, txid) values ($1, $2, $3, $4, $5, $6, $7)", regno, accountno, before_amount, delta_amount, amount, txdt, uuid());
                 txdt.add(Math.random() * SECONDS_ADJUST_TX, "seconds");
 
                 // ensure we do not go part current dt

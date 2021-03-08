@@ -48,7 +48,7 @@ export default () => {
         const q = res.locals.postgres as PostgresLocals;
         let result = await q.query("select * from tx where regno=$1 and accountno=$2 order by txdt desc", regno, accountno);
         res.locals.result = result.rows.map(r => {
-            return new Transaction(r.before, r.delta, r.after, moment.utc(r.txdt));
+            return new Transaction(r.txid, r.before, r.delta, r.after, moment.utc(r.txdt));
         });
         next();
     })
