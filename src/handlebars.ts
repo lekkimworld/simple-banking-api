@@ -2,10 +2,10 @@ import { Application } from "express";
 import Handlebars from "handlebars";
 import exphbs from "express-handlebars";
 
-export default (app : Application) => {
+export default (app: Application): void => {
     // add handlebars
-    app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-    app.set('view engine', 'handlebars');
+    app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+    app.set("view engine", "handlebars");
 
     Handlebars.registerHelper({
         eq: function (v1, v2) {
@@ -26,11 +26,11 @@ export default (app : Application) => {
         gte: function (v1, v2) {
             return v1 >= v2;
         },
-        and: function () {
-            return Array.prototype.slice.call(arguments).every(Boolean);
+        and: function (...args) {
+            return Array.prototype.slice.call(args).every(Boolean);
         },
-        or: function () {
-            return Array.prototype.slice.call(arguments, 0, -1).some(Boolean);
-        }
+        or: function (...args) {
+            return Array.prototype.slice.call(args, 0, -1).some(Boolean);
+        },
     });
-}
+};

@@ -2,14 +2,13 @@ import { Application } from "express";
 import express from "express";
 import getApiRouter from "./api";
 
-export default (app : Application) => {
+export default (app: Application): void => {
     // add routes
     const rootRouter = express.Router();
     app.use("/", rootRouter);
     app.use("/api", getApiRouter());
 
-    //@ts-ignore5
-    rootRouter.get("/", async (req, res) => {
+    rootRouter.get("/", async (_req, res) => {
         res.render("root");
-    })
-}
+    });
+};
