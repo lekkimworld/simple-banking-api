@@ -16,6 +16,20 @@ export default (): void => {
         res.type("json").send(p);
     });
 
+    router.get("/customers", async (req, res, next) => {
+        const q = res.locals.postgres as PostgresLocals;
+        const result = await q.query(
+            "select * from customer"
+        );
+        if (result.rowCount === 0) {
+            return next(
+                new HttpError(`No customers found`, 404)
+            );
+        }
+        res.locals.result = result.rows.map((r: any) => new Customer(r.custno));
+        next();
+    });
+
     router.get("/customer/:custno", async (req, res, next) => {
         const custno = req.params.custno;
         if (!custno) return next(new HttpError("Missing customer number", 417));
