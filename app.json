@@ -16,6 +16,6 @@
         }
     },
     "image": "heroku/ruby",
-    "addons": ["heroku-redis:hobby-dev", "heroku-postgresql:hobby-basic"],
+    "addons": ["heroku-redis:mini", "heroku-postgresql:basic"],
     "environments": {}
 }
