@@ -1,10 +1,10 @@
-import express from "express";
+import express, { Router } from "express";
 import cors from "cors";
 import { PostgresLocals } from "./postgres";
 import { HttpError, Customer, Account, Transaction } from "./types";
 import moment from "moment";
 
-export default (): void => {
+export default (): Router => {
     const router = express.Router();
     router.use(cors());
 
@@ -16,15 +16,11 @@ export default (): void => {
         res.type("json").send(p);
     });
 
-    router.get("/customers", async (req, res, next) => {
+    router.get("/customers", async (_req, res, next) => {
         const q = res.locals.postgres as PostgresLocals;
-        const result = await q.query(
-            "select * from customer"
-        );
+        const result = await q.query("select * from customer");
         if (result.rowCount === 0) {
-            return next(
-                new HttpError(`No customers found`, 404)
-            );
+            return next(new HttpError("No customers found", 404));
         }
         res.locals.result = result.rows.map((r: any) => new Customer(r.custno));
         next();
